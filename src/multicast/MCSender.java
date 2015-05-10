@@ -24,6 +24,11 @@ public class MCSender {
 				DatagramPacket dp = new DatagramPacket(buf, buf.length, ia,
 						4099);
 				ms.send(dp);
+				byte[] buf2 = new byte[65536];
+				DatagramPacket rp = new DatagramPacket(buf2, buf2.length);
+				ms.receive(rp);
+				String data = new String(rp.getData(), 0, rp.getLength());
+				System.out.println("Received: " + data);
 			}
 		} catch (IOException e) {
 			System.out.println("Exception:" + e);
