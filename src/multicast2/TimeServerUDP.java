@@ -1,4 +1,4 @@
-package multicast;
+package multicast2;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

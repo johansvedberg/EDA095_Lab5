@@ -4,10 +4,11 @@ import java.net.*;
 import java.io.*;
 
 public class MCSender {
+	private static MulticastSocket ms;
 
 	public static void main(String args[]) {
 		try {
-			MulticastSocket ms = new MulticastSocket();
+			ms = new MulticastSocket();
 			ms.setTimeToLive(1);
 			InetAddress ia = InetAddress.getByName("experiment.mcast.net");
 			while (true) {
@@ -24,14 +25,12 @@ public class MCSender {
 				DatagramPacket dp = new DatagramPacket(buf, buf.length, ia,
 						4099);
 				ms.send(dp);
-				byte[] buf2 = new byte[65536];
-				DatagramPacket rp = new DatagramPacket(buf2, buf2.length);
-				ms.receive(rp);
-				String data = new String(rp.getData(), 0, rp.getLength());
+				
+				String data = getIP();
+				
 				System.out.println("Received data from: " + data);
 				byte[] buf3 = new byte[1024];
-				InetSocketAddress server = new InetSocketAddress(data,
-						30000);
+				InetSocketAddress server = new InetSocketAddress(data, 30000);
 				DatagramPacket send = new DatagramPacket(s.getBytes(),
 						s.getBytes().length, server.getAddress(),
 						server.getPort());
@@ -47,7 +46,18 @@ public class MCSender {
 			System.out.println("Exception:" + e);
 		}
 	}
-	
-	
+
+	private static String getIP() {
+		byte[] buf2 = new byte[65536];
+		DatagramPacket rp = new DatagramPacket(buf2, buf2.length);
+		try {
+			ms.receive(rp);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String data = new String(rp.getData(), 0, rp.getLength());
+		return data;
+	}
 
 }
