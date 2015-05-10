@@ -7,20 +7,20 @@ import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
 public class MCServerOffer implements Runnable {
-	private MulticastSocket ms;
 
-	public MCServerOffer(MulticastSocket ms) {
-
-		this.ms = ms;
+	public MCServerOffer() {
 
 	}
 
 	@Override
 	public void run() {
-		InetAddress local;
+
 		try {
-			local = InetAddress.getLocalHost();
-			String ip = local.getHostAddress();
+			MulticastSocket ms = new MulticastSocket(4099);
+			InetAddress ia = InetAddress.getByName("experiment.mcast.net");
+			ms.joinGroup(ia);
+			InetAddress local = InetAddress.getLocalHost();
+			String ip = local.getHostName();
 			while (true) {
 				byte[] buf = new byte[65536];
 				DatagramPacket dp = new DatagramPacket(buf, buf.length);

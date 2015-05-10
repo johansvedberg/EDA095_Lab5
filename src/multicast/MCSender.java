@@ -30,7 +30,7 @@ public class MCSender {
 				String data = new String(rp.getData(), 0, rp.getLength());
 				System.out.println("Received data from: " + data);
 				byte[] buf3 = new byte[1024];
-				InetSocketAddress server = new InetSocketAddress("localhost",
+				InetSocketAddress server = new InetSocketAddress(data,
 						30000);
 				DatagramPacket send = new DatagramPacket(s.getBytes(),
 						s.getBytes().length, server.getAddress(),
@@ -48,8 +48,6 @@ public class MCSender {
 		}
 	}
 	
-	private int getPort(){
-		return 0;
-	}
+	
 
 }
