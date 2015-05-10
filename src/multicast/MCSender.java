@@ -28,11 +28,28 @@ public class MCSender {
 				DatagramPacket rp = new DatagramPacket(buf2, buf2.length);
 				ms.receive(rp);
 				String data = new String(rp.getData(), 0, rp.getLength());
-				System.out.println("Received: " + data);
+				System.out.println("Received data from: " + data);
+				byte[] buf3 = new byte[1024];
+				InetSocketAddress server = new InetSocketAddress("localhost",
+						30000);
+				DatagramPacket send = new DatagramPacket(s.getBytes(),
+						s.getBytes().length, server.getAddress(),
+						server.getPort());
+
+				DatagramSocket ds = new DatagramSocket();
+				ds.send(send);
+				DatagramPacket receive = new DatagramPacket(buf3, buf3.length);
+				ds.receive(receive);
+				String data2 = new String(receive.getData());
+				System.out.println(data2);
 			}
 		} catch (IOException e) {
 			System.out.println("Exception:" + e);
 		}
+	}
+	
+	private int getPort(){
+		return 0;
 	}
 
 }

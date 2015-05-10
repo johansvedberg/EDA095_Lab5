@@ -4,16 +4,23 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.UnknownHostException;
 
-public class MCServerOffer {
+public class MCServerOffer implements Runnable {
+	private MulticastSocket ms;
 
-	public static void main(String args[]) {
+	public MCServerOffer(MulticastSocket ms) {
+
+		this.ms = ms;
+
+	}
+
+	@Override
+	public void run() {
+		InetAddress local;
 		try {
-			MulticastSocket ms = new MulticastSocket(4099);
-			InetAddress ia = InetAddress.getByName("experiment.mcast.net");
-			InetAddress local = InetAddress.getLocalHost();
-			String ip = local.getHostName();
-			ms.joinGroup(ia);
+			local = InetAddress.getLocalHost();
+			String ip = local.getHostAddress();
 			while (true) {
 				byte[] buf = new byte[65536];
 				DatagramPacket dp = new DatagramPacket(buf, buf.length);
@@ -21,13 +28,16 @@ public class MCServerOffer {
 				String s = new String(dp.getData(), 0, dp.getLength());
 				System.out.println("Received: " + s);
 				byte[] buf2 = ip.getBytes();
-				DatagramPacket sp = new DatagramPacket(buf2, buf2.length, dp.getAddress(),
-						dp.getPort());
+				DatagramPacket sp = new DatagramPacket(buf2, buf2.length,
+						dp.getAddress(), dp.getPort());
 				ms.send(sp);
 			}
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Exception:" + e);
+			e.printStackTrace();
 		}
+
 	}
 
 }
