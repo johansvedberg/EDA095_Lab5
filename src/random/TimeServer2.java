@@ -14,8 +14,8 @@ public class TimeServer2 {
 		while (true) {
 			command = scan.nextLine();
 			Date date = new Date();
-			switch (command) {	
-			
+			switch (command) {
+
 			case "date":
 
 				DateFormat df = DateFormat.getDateInstance(DateFormat.FULL,
@@ -23,7 +23,7 @@ public class TimeServer2 {
 				String newDate = df.format(date);
 				System.out.println(newDate);
 				break;
-			
+
 			case "time":
 
 				DateFormat tf = DateFormat.getTimeInstance(DateFormat.FULL,
@@ -34,11 +34,7 @@ public class TimeServer2 {
 
 			}
 		}
-		
 
 	}
 
-
-	}
-
-
+}
