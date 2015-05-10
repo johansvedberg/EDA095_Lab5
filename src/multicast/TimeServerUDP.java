@@ -11,15 +11,18 @@ import java.util.Locale;
 import java.util.Random;
 
 public class TimeServerUDP implements Runnable {
+private DatagramSocket ds;
 
+ public TimeServerUDP(DatagramSocket ds ) {
+	this.ds = ds;
+}
 	
 
 	@Override
 	public void run() {
 		try {
-			Random r = new Random();
-			int serverport = 30000 + r.nextInt(20);
-			DatagramSocket ds = new DatagramSocket(30000);
+			
+		
 			System.out.println("Server online...");
 
 			while (true) {

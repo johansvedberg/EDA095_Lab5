@@ -2,14 +2,16 @@ package multicast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
 public class MCServerOffer implements Runnable {
+	private DatagramSocket ds;
 
-	public MCServerOffer() {
-
+	public MCServerOffer(DatagramSocket ds) {
+		this.ds = ds;
 	}
 
 	@Override
@@ -20,7 +22,7 @@ public class MCServerOffer implements Runnable {
 			InetAddress ia = InetAddress.getByName("experiment.mcast.net");
 			ms.joinGroup(ia);
 			InetAddress local = InetAddress.getLocalHost();
-			String ip = local.getHostAddress();
+			String ip = local.getHostAddress() + "/" + ds.getLocalPort();
 			while (true) {
 				byte[] buf = new byte[65536];
 				DatagramPacket dp = new DatagramPacket(buf, buf.length);

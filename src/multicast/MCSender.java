@@ -5,13 +5,18 @@ import java.io.*;
 
 public class MCSender {
 	private static MulticastSocket ms;
+	private static InetAddress ia;
 
 	public static void main(String args[]) {
 		try {
 			ms = new MulticastSocket();
 			ms.setTimeToLive(1);
-			InetAddress ia = InetAddress.getByName("experiment.mcast.net");
+			ia = InetAddress.getByName("experiment.mcast.net");
 			while (true) {
+				String data = getIP();
+				String[] stuff = data.split("/");
+				String inet = stuff[0];
+				int port = Integer.valueOf(stuff[1]);
 				int ch;
 				String s = new String();
 				do {
@@ -22,18 +27,12 @@ public class MCSender {
 				} while (ch != '\n');
 				System.out.println("Sending message: " + s);
 				byte[] buf = s.getBytes();
-				DatagramPacket dp = new DatagramPacket(buf, buf.length, ia,
-						4099);
-				ms.send(dp);
-				
-				String data = getIP();
-				
+
 				System.out.println("Received data from: " + data);
 				byte[] buf3 = new byte[1024];
-				InetSocketAddress server = new InetSocketAddress(data, 30000);
-				DatagramPacket send = new DatagramPacket(s.getBytes(),
-						s.getBytes().length, server.getAddress(),
-						server.getPort());
+				InetSocketAddress server = new InetSocketAddress(inet, port);
+				DatagramPacket send = new DatagramPacket(buf, buf.length,
+						server.getAddress(), server.getPort());
 
 				DatagramSocket ds = new DatagramSocket();
 				ds.send(send);
@@ -48,8 +47,17 @@ public class MCSender {
 	}
 
 	private static String getIP() {
-		byte[] buf2 = new byte[65536];
-		DatagramPacket rp = new DatagramPacket(buf2, buf2.length);
+		String request = "Anyone here?";
+		DatagramPacket dp = new DatagramPacket(request.getBytes(),
+				request.getBytes().length, ia, 4099);
+		try {
+			ms.send(dp);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		byte[] buf = new byte[65536];
+		DatagramPacket rp = new DatagramPacket(buf, buf.length);
 		try {
 			ms.receive(rp);
 		} catch (IOException e) {
