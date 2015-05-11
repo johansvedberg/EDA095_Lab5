@@ -29,6 +29,7 @@ public class MCServerOffer implements Runnable {
 				ms.receive(dp);
 				String s = new String(dp.getData(), 0, dp.getLength());
 				System.out.println("Received: " + s);
+				System.out.println("------------------");
 				byte[] buf2 = ip.getBytes();
 				DatagramPacket sp = new DatagramPacket(buf2, buf2.length,
 						dp.getAddress(), dp.getPort());

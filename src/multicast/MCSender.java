@@ -13,10 +13,7 @@ public class MCSender {
 			ms.setTimeToLive(1);
 			ia = InetAddress.getByName("experiment.mcast.net");
 			while (true) {
-				String data = getIP();
-				String[] stuff = data.split("/");
-				String inet = stuff[0];
-				int port = Integer.valueOf(stuff[1]);
+			
 				int ch;
 				String s = new String();
 				do {
@@ -25,7 +22,10 @@ public class MCSender {
 						s = s + (char) ch;
 					}
 				} while (ch != '\n');
-				System.out.println("Sending message: " + s);
+				String data = getIP();
+				String[] stuff = data.split("/");
+				String inet = stuff[0];
+				int port = Integer.valueOf(stuff[1]);
 				byte[] buf = s.getBytes();
 
 				System.out.println("Received data from: " + data);
@@ -53,7 +53,7 @@ public class MCSender {
 		try {
 			ms.send(dp);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 		byte[] buf = new byte[65536];
@@ -61,8 +61,7 @@ public class MCSender {
 		try {
 			ms.receive(rp);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();	
 		}
 		String data = new String(rp.getData(), 0, rp.getLength());
 		return data;

@@ -22,17 +22,15 @@ private DatagramSocket ds;
 	public void run() {
 		try {
 			
-		
 			System.out.println("Server online...");
+			System.out.println("------------------");
 
 			while (true) {
 				byte[] buf = new byte[1024];
 				DatagramPacket receive = new DatagramPacket(buf, buf.length);
 				ds.receive(receive);
-
 				InetAddress address = receive.getAddress();
 				int port = receive.getPort();
-				System.out.println("Packet received, printing information:");
 				System.out.println("IP: " + address);
 				System.out.println("Port: " + port);
 
